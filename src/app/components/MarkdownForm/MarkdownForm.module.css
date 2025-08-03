@@ -1,0 +1,27 @@
+/*.container {*/
+/*  font-family: sans-serif;*/
+/*  line-height: 1.6;*/
+/*  max-width: 700px;*/
+/*  margin: 0 auto;*/
+/*}*/
+
+/*.textChunk {*/
+/*  margin: 1rem 0;*/
+/*}*/
+
+/*.textarea {*/
+/*  display: block;*/
+/*  margin: 10px 0;*/
+/*  width: 100%;*/
+/*  padding: 10px;*/
+/*  font-family: inherit;*/
+/*  border: 1px solid #ccc;*/
+/*  border-radius: 4px;*/
+/*  resize: vertical;*/
+/*}*/
+
+/*.textarea:focus {*/
+/*  outline: none;*/
+/*  border-color: #0070f3;*/
+/*  box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);*/
+/*}*/
