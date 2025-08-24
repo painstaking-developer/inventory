@@ -8,8 +8,6 @@ import {Button, Heading, Separator, Textarea} from "@chakra-ui/react";
 import {Clipboard, Input, InputGroup, HStack} from "@chakra-ui/react"
 import {FiExternalLink} from 'react-icons/fi';
 
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
-
 export default function CreatePage() {
     const [md, setMd] = useState('');
     const [shareUrl, setShareUrl] = useState('');
@@ -30,13 +28,13 @@ export default function CreatePage() {
     useEffect(() => {
         if (md) {
             const encoded = base64EncodeUnicode(md);
-            const url = `${window.location.origin}${basePath}?i=${encoded}`;
+            const url = `${window.location.origin}?i=${encoded}`;
             setShareUrl(url);
             // Update URL without navigation
-            window.history.replaceState(null, '', `${basePath}/create?i=${encoded}`);
+            window.history.replaceState(null, '', `/create?i=${encoded}`);
         } else {
             setShareUrl('');
-            window.history.replaceState(null, '', `${basePath}/create`);
+            window.history.replaceState(null, '', '/create');
         }
     }, [md]);
 
