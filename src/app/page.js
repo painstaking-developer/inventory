@@ -5,7 +5,7 @@ import {useSearchParams} from 'next/navigation';
 import styles from './page.module.css';
 import MarkdownForm from "@/app/components/MarkdownForm/MarkdownForm";
 import {decodeBase64} from "@/app/utils/base64";
-import {Button, Clipboard} from "@chakra-ui/react"
+import {Button} from "@chakra-ui/react"
 import Link from "next/link";
 
 export default function HomePage() {
@@ -52,15 +52,13 @@ export default function HomePage() {
     };
 
     return (
-        <Suspense fallback={null}>
-            <div className={styles.page}>
-                <main className={styles.main}>
-                    <MarkdownForm
-                        md={decodedMd}
-                        onFilledMarkdownChange={setFinalMarkdown}
-                    />
-                </main>
-            </div>
-        </Suspense>
+        <div className={styles.page}>
+            <main className={styles.main}>
+                <MarkdownForm
+                    md={decodedMd}
+                    onFilledMarkdownChange={setFinalMarkdown}
+                />
+            </main>
+        </div>
     );
 }

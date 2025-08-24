@@ -68,7 +68,7 @@ export default function CreatePage() {
     );
 
     return (
-        <Suspense fallback={null}>
+        <div>
             <Heading>Markdown Form Editor</Heading>
 
             <Textarea
@@ -91,6 +91,6 @@ export default function CreatePage() {
             <Heading>Live Preview</Heading>
             <Separator mt="2" mb="8" />
             <MarkdownForm md={md}/>
-        </Suspense>
+        </div>
     );
 }
