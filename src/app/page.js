@@ -1,11 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import {useState, useEffect} from 'react';
+import {useSearchParams} from 'next/navigation';
 import styles from './page.module.css';
 import MarkdownForm from "@/app/components/MarkdownForm/MarkdownForm";
 import {decodeBase64} from "@/app/utils/base64";
+import {Button, Clipboard} from "@chakra-ui/react"
+import Link from "next/link";
 
 export default function HomePage() {
     const searchParams = useSearchParams();
@@ -28,8 +29,13 @@ export default function HomePage() {
                 <main className={styles.main}>
                     <div>
                         There&apos;s nothing here.
-                        <br />
-                        <Link href="/create">Create your own!</Link>
+                    </div>
+                    <div>
+                        <Link href="/create" passHref>
+                            <Button as="a" variant="surface" size="sm">
+                                Create your own
+                            </Button>
+                        </Link>
                     </div>
                 </main>
             </div>
@@ -54,18 +60,18 @@ export default function HomePage() {
                 />
                 {!isInvalid && (
                     <div className={styles.actions}>
-                        <button
-                            onClick={handleCopyToClipboard}
-                            disabled={!finalMarkdown}
-                            className={styles.button}
-                        >
-                            Copy to Clipboard
-                        </button>
-                        <Link
-                            href={`/create?i=${encoded_md}`}
-                            className={styles.link}
-                        >
-                            Create your own!
+                        <Clipboard.Root value={finalMarkdown}>
+                            <Clipboard.Trigger asChild>
+                                <Button variant="surface" size="sm">
+                                    <Clipboard.Indicator/>
+                                    <Clipboard.CopyText/>
+                                </Button>
+                            </Clipboard.Trigger>
+                        </Clipboard.Root>
+                        <Link href={`/create?i=${encoded_md}`} passHref>
+                            <Button variant="surface" size="sm">
+                                Modify this template
+                            </Button>
                         </Link>
                     </div>
                 )}

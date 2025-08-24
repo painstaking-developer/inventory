@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useSearchParams } from 'next/navigation';
+import {useState, useEffect} from 'react';
+import {useSearchParams} from 'next/navigation';
 import MarkdownForm from "@/app/components/MarkdownForm/MarkdownForm";
 import {base64EncodeUnicode, decodeBase64} from "@/app/utils/base64";
-import { Textarea } from "@chakra-ui/react"
+import {Button, Heading, Icon, Separator, Textarea} from "@chakra-ui/react";
+import {Clipboard, IconButton, Input, InputGroup, HStack} from "@chakra-ui/react"
+import {FiExternalLink} from 'react-icons/fi';
 
 export default function CreatePage() {
     const [md, setMd] = useState('');
@@ -45,33 +47,61 @@ export default function CreatePage() {
         }
     };
 
+    const EndButtons = () => (
+        <HStack spacing="1">
+            <Clipboard.Trigger asChild>
+                <Button
+                    aria-label="Copy link"
+                    variant="surface"
+                    size="xs"
+                    me="-1"
+                >
+                    <Clipboard.Indicator/>
+                    Copy Link
+                </Button>
+            </Clipboard.Trigger>
+            <Button
+                as="a"
+                href={shareUrl || undefined}
+                rel="noopener noreferrer"
+                aria-label="Open link"
+                variant="surface"
+                size="xs"
+                isDisabled={!shareUrl}
+                me="-2"
+            >
+                <FiExternalLink/>
+                Open Page
+            </Button>
+        </HStack>
+    );
+
     return (
         <div>
-            <h2>Markdown Form Editor</h2>
+            <Heading>Markdown Form Editor</Heading>
 
             <Textarea
                 value={md}
                 onChange={(e) => setMd(e.target.value)}
                 rows={10}
-                style={{ fontFamily: 'monospace' }}
+                style={{fontFamily: 'monospace'}}
                 placeholder="Write your custom Markdown with %placeholders% here..."
             />
 
-            <div>
-                <label>
-                    <strong>Shareable Link:</strong>
-                </label>
-                <br />
-                <a href={shareUrl} style={{ fontFamily: 'monospace' }}>
-                    {shareUrl}
-                </a>
-                <button onClick={handleCopy} disabled={!shareUrl}>
-                    Copy to Clipboard
-                </button>
-            </div>
+            <Clipboard.Root value={shareUrl}>
+                <Clipboard.Label textStyle="label">Sharable Link</Clipboard.Label>
+                <InputGroup endElement={<EndButtons/>}>
+                    <Clipboard.Input asChild>
+                        <Input/>
+                    </Clipboard.Input>
+                </InputGroup>
+            </Clipboard.Root>
 
-            <h3>Live Preview:</h3>
-            <MarkdownForm md={md} />
+            <Separator my="4"/>
+
+            <Heading>Live preview</Heading>
+
+            <MarkdownForm md={md}/>
         </div>
     );
 }
