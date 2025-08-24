@@ -2,8 +2,12 @@
 import {useState, useEffect} from 'react';
 import {marked} from 'marked';
 import styles from './MarkdownForm.module.css';
-import { Textarea } from "@chakra-ui/react"
+import {Button, Clipboard, Group, Textarea} from "@chakra-ui/react"
 import {Prose} from "@/app/components/ui/prose";
+import Link from "next/link";
+import {decodeBase64} from "@/app/utils/base64";
+import {useSearchParams} from "next/navigation";
+import {FiEdit} from "react-icons/fi";
 
 // Split Markdown on %...% and return chunks
 const parseMarkdownToChunks = (md) => {
@@ -29,17 +33,34 @@ const MarkdownForm = ({md, onFilledMarkdownChange}) => {
     const [values, setValues] = useState(() =>
         Array(chunks.filter(c => c.type === 'input').length).fill('')
     );
+    const searchParams = useSearchParams();
+    const encoded_md = searchParams.get('i');
+    const [isInvalid, setIsInvalid] = useState(false);
+    const [decodedMd, setDecodedMd] = useState('');
+    const [finalMarkdown, setFinalMarkdown] = useState('');
 
     useEffect(() => {
+        if (encoded_md) {
+            const decoded = decodeBase64(encoded_md);
+            setDecodedMd(decoded);
+            setIsInvalid(decoded === '*Invalid base64 input*');
+        }
+    }, [encoded_md]);
+
+    useEffect(() => {
+        let inputIndex = 0;
+        const filled = chunks
+            .map((chunk) => (chunk.type === 'text' ? chunk.value : (values[inputIndex++] || '')))
+            .join('');
+
         if (typeof onFilledMarkdownChange === 'function') {
-            let inputIndex = 0;
-            const filled = chunks.map((chunk) => {
-                if (chunk.type === 'text') return chunk.value;
-                return values[inputIndex++] || '';
-            }).join('');
             onFilledMarkdownChange(filled);
         }
-    }, [values, chunks, onFilledMarkdownChange]);
+        if (typeof setFinalMarkdown === 'function') {
+            setFinalMarkdown(filled);
+        }
+    }, [values, chunks, onFilledMarkdownChange, setFinalMarkdown]);
+
 
     const handleInputChange = (index, newVal) => {
         setValues((prev) => {
@@ -81,6 +102,24 @@ const MarkdownForm = ({md, onFilledMarkdownChange}) => {
                 }
                 return null;
             })}
+            {!isInvalid && (
+                <Group className={styles.actions}>
+                    <Clipboard.Root value={finalMarkdown}>
+                        <Clipboard.Trigger asChild>
+                            <Button variant="surface" size="sm">
+                                <Clipboard.Indicator/>
+                                <Clipboard.CopyText/>
+                            </Button>
+                        </Clipboard.Trigger>
+                    </Clipboard.Root>
+                    <Link href={`/create?i=${encoded_md}`} passHref>
+                        <Button variant="surface" size="sm">
+                            <FiEdit />
+                            Modify this template
+                        </Button>
+                    </Link>
+                </Group>
+            )}
         </div>
     );
 };

@@ -58,23 +58,6 @@ export default function HomePage() {
                     md={decodedMd}
                     onFilledMarkdownChange={setFinalMarkdown}
                 />
-                {!isInvalid && (
-                    <div className={styles.actions}>
-                        <Clipboard.Root value={finalMarkdown}>
-                            <Clipboard.Trigger asChild>
-                                <Button variant="surface" size="sm">
-                                    <Clipboard.Indicator/>
-                                    <Clipboard.CopyText/>
-                                </Button>
-                            </Clipboard.Trigger>
-                        </Clipboard.Root>
-                        <Link href={`/create?i=${encoded_md}`} passHref>
-                            <Button variant="surface" size="sm">
-                                Modify this template
-                            </Button>
-                        </Link>
-                    </div>
-                )}
             </main>
         </div>
     );

@@ -96,11 +96,9 @@ export default function CreatePage() {
                     </Clipboard.Input>
                 </InputGroup>
             </Clipboard.Root>
-
-            <Separator my="4"/>
-
-            <Heading>Live preview</Heading>
-
+            <Separator mt="8" mb="2" />
+            <Heading>Live Preview</Heading>
+            <Separator mt="2" mb="8" />
             <MarkdownForm md={md}/>
         </div>
     );

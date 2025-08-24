@@ -12,6 +12,7 @@ export default function RootLayout({ children }) {
                 <Container
                     maxW={{ base: "100%", md: "1000px" }}
                     px={{ base: 4, md: 6 }}
+                    pt={{ base: 4, md: 8 }}
                     mx="auto"
                 >
                     {children}
