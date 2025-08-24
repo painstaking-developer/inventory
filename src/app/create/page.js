@@ -1,11 +1,11 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, Suspense} from 'react';
 import {useSearchParams} from 'next/navigation';
 import MarkdownForm from "@/app/components/MarkdownForm/MarkdownForm";
 import {base64EncodeUnicode, decodeBase64} from "@/app/utils/base64";
-import {Button, Heading, Icon, Separator, Textarea} from "@chakra-ui/react";
-import {Clipboard, IconButton, Input, InputGroup, HStack} from "@chakra-ui/react"
+import {Button, Heading, Separator, Textarea} from "@chakra-ui/react";
+import {Clipboard, Input, InputGroup, HStack} from "@chakra-ui/react"
 import {FiExternalLink} from 'react-icons/fi';
 
 export default function CreatePage() {
@@ -24,7 +24,7 @@ export default function CreatePage() {
         }
     }, [searchParams]);
 
-    // Update share URL when markdown changes
+    // Update share URL when Markdown changes
     useEffect(() => {
         if (md) {
             const encoded = base64EncodeUnicode(md);
@@ -37,15 +37,6 @@ export default function CreatePage() {
             window.history.replaceState(null, '', '/create');
         }
     }, [md]);
-
-    const handleCopy = async () => {
-        try {
-            await navigator.clipboard.writeText(shareUrl);
-            // Optionally add success feedback
-        } catch (err) {
-            console.error('Failed to copy:', err);
-        }
-    };
 
     const EndButtons = () => (
         <HStack spacing="1">
@@ -77,7 +68,7 @@ export default function CreatePage() {
     );
 
     return (
-        <div>
+        <Suspense fallback={null}>
             <Heading>Markdown Form Editor</Heading>
 
             <Textarea
@@ -100,6 +91,6 @@ export default function CreatePage() {
             <Heading>Live Preview</Heading>
             <Separator mt="2" mb="8" />
             <MarkdownForm md={md}/>
-        </div>
+        </Suspense>
     );
 }

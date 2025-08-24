@@ -1,6 +1,6 @@
 'use client';
 
-import {useState, useEffect} from 'react';
+import {useState, useEffect, Suspense} from 'react';
 import {useSearchParams} from 'next/navigation';
 import styles from './page.module.css';
 import MarkdownForm from "@/app/components/MarkdownForm/MarkdownForm";
@@ -52,13 +52,15 @@ export default function HomePage() {
     };
 
     return (
-        <div className={styles.page}>
-            <main className={styles.main}>
-                <MarkdownForm
-                    md={decodedMd}
-                    onFilledMarkdownChange={setFinalMarkdown}
-                />
-            </main>
-        </div>
+        <Suspense fallback={null}>
+            <div className={styles.page}>
+                <main className={styles.main}>
+                    <MarkdownForm
+                        md={decodedMd}
+                        onFilledMarkdownChange={setFinalMarkdown}
+                    />
+                </main>
+            </div>
+        </Suspense>
     );
 }
